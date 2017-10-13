@@ -17,7 +17,7 @@ http://en.literateprograms.org/Red-black_tree_(C)
 how to use:
 this code define the abstract action of a rbtree,
 you can define your node struct, 
-the first member of your node sturct MUST be rbnode, 
+the first member of your node struct MUST be rbnode, 
 and define your own callback functions of 
 compare two nodes, compare a value and a node, and swap two nodes.
 
@@ -47,7 +47,7 @@ user defined function to compare value of two nodes
 
 node1.value <  nod2.value , return -1
 node1.value == nod2.value , return 0
-node1.value <  nod2.value , return 1
+node1.value >  nod2.value , return 1
 */
 typedef int  (*rbtree_node_cmp )( rbnode* node1, rbnode* node2 );
 
@@ -70,6 +70,11 @@ typedef void (*rbtree_node_swap)( rbnode* node1, rbnode* node2 );
 user defined function to proc a node
 */
 typedef void (*rbtree_proc_node)( rbnode* node );
+
+/*
+user defined function to proc a node
+*/
+typedef void (*rbtree_proc_node_ex)( rbnode* node, void* data );
 
 /*
 user defined function get a value of a node
@@ -183,6 +188,19 @@ order        - order to walk the rbtree, ( pre_order, in_order, post_order )
 cb           - call back function of each node
 */
 void rbtree_walk( rbtree* tree, int order, rbtree_proc_node cb );
+
+
+/*
+rbtree_walk_ex: walk the rbtree, and call the call back function with each node 
+                and the given data.
+
+params:
+tree         - pointer to a rbtree
+order        - order to walk the rbtree, ( pre_order, in_order, post_order )
+cb           - call back function of each node
+data         - the data pass to call back function
+*/
+void rbtree_walk_ex( rbtree* tree, int order, rbtree_proc_node_ex cb, void* data );
 
 
 /*

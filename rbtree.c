@@ -24,7 +24,7 @@ static void delete_case6( rbtree* tree, rbnode *n );
 
 static int  node_black_walk( rbnode* n, int find, int count );
 static void node_walk( rbnode* node, int order, rbtree_proc_node cb );
-
+static void node_walk_ex( rbnode* node, int order, rbtree_proc_node_ex cb, void* data );
 
 static int rbtree_path_black_count( rbnode* n );
 static int rbtree_verify_rednode( rbnode* n );
@@ -710,6 +710,51 @@ void node_walk( rbnode* node, int order, rbtree_proc_node cb )
             node_walk( node->left, order, cb );
             node_walk( node->right, order, cb );
             cb( node );
+            break;
+    }
+    
+}
+
+void rbtree_walk_ex( rbtree* tree, int order, rbtree_proc_node_ex cb, void* data )
+{
+    switch( order )
+    {
+        case RBTREE_WALK_PRE_ORDER:
+        case RBTREE_WALK_IN_ORDER:
+        case RBTREE_WALK_POST_ORDER:
+            break;
+        
+        default:
+            order = RBTREE_WALK_IN_ORDER;
+    }
+
+    node_walk_ex( tree->root, order, cb, data );
+    
+}
+
+void node_walk_ex( rbnode* node, int order, rbtree_proc_node_ex cb, void* data )
+{
+    if( !node )
+        return;
+
+    switch( order )
+    {
+        case RBTREE_WALK_PRE_ORDER:
+            cb( node, data );
+            node_walk_ex( node->left, order, cb, data );
+            node_walk_ex( node->right, order, cb, data );
+            break;
+        
+        case RBTREE_WALK_IN_ORDER:
+            node_walk_ex( node->left, order, cb, data );
+            cb( node, data );
+            node_walk_ex( node->right, order, cb, data );
+            break;
+        
+        case RBTREE_WALK_POST_ORDER:
+            node_walk_ex( node->left, order, cb, data );
+            node_walk_ex( node->right, order, cb, data );
+            cb( node, data );
             break;
     }
     
