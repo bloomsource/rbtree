@@ -223,7 +223,7 @@ cb           - a call back funtion to print a node value
 
 note:
 graphviz is a tool generate computer graph, http://www.graphviz.org
-you can install it with "yum install -y grphviz" or "apt-get install graphviz"
+you can install it with "yum install -y graphviz" or "apt-get install graphviz"
 
 after you call this function, a dot file was create,
 you can generate a png file of your rbtree with the following command:
